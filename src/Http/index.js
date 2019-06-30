@@ -18,12 +18,12 @@ export const route = (
     registry.register(method.toLowerCase(), url, [ ...middlewareHandlers, controllerHandler]);
 };
 
-export const get    = (url, middlewares = [], actionDepedencies = []) => route('get', url, middlewares, actionDepedencies);
-export const post   = (url, middlewares = [], actionDepedencies = []) => route('post', url, middlewares, actionDepedencies);
-export const del    = (url, middlewares = [], actionDepedencies = []) => route('del', url, middlewares, actionDepedencies);
-export const put    = (url, middlewares = [], actionDepedencies = []) => route('put', url, middlewares, actionDepedencies);
-export const patch  = (url, middlewares = [], actionDepedencies = []) => route('patch', url, middlewares, actionDepedencies);
-export const any    = (url, middlewares = [], actionDepedencies = []) => route('any', url, middlewares, actionDepedencies);
+export const get    = (url, middlewares = [], actionDependencies = []) => route('get', url, middlewares, actionDependencies);
+export const post   = (url, middlewares = [], actionDependencies = []) => route('post', url, middlewares, actionDependencies);
+export const del    = (url, middlewares = [], actionDependencies = []) => route('del', url, middlewares, actionDependencies);
+export const put    = (url, middlewares = [], actionDependencies = []) => route('put', url, middlewares, actionDependencies);
+export const patch  = (url, middlewares = [], actionDependencies = []) => route('patch', url, middlewares, actionDependencies);
+export const any    = (url, middlewares = [], actionDependencies = []) => route('any', url, middlewares, actionDependencies);
 
 export {
     HttpServiceProvider,
