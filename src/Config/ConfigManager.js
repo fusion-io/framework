@@ -1,4 +1,4 @@
-import NestedHash from "@fusion.io/bare/utils/NestedHash";
+import NestedHash from "../utils/NestedHash";
 
 export default class ConfigManager extends NestedHash {
 

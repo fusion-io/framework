@@ -1,4 +1,4 @@
-import {container} from "@fusion.io/bare";
+import {container} from "@fusion.io/container";
 
 export default class RouteRegistry {
 
@@ -16,7 +16,7 @@ export default class RouteRegistry {
 
     createControllerActionHandler(ControllerSymbol, actionName = "handle", dependencies = []) {
         return async (context, next) => {
-            const methodDependencyInstances = dependencies.map(dependency => container.resolve(dependency));
+            const methodDependencyInstances = dependencies.map(dependency => container.make(dependency));
             await container.invoke(
                 ControllerSymbol, actionName,
                 context, next, ...methodDependencyInstances

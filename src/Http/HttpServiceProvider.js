@@ -1,5 +1,5 @@
-import ServiceProvider from "@fusion.io/bare/utils/ServiceProvider";
-import {Config} from "@fusion.io/bare";
+import ServiceProvider from "../index";
+import {Config} from "../index";
 
 export const ROUTER     = "Http.Router";
 export const KERNEL     = "Http.Kernel";
@@ -40,8 +40,8 @@ export default class HttpServiceProvider extends ServiceProvider {
     }
 
     bootstrapKernel() {
-        const kernel = this.container.resolve(KERNEL);
-        const config = this.container.resolve(Config);
+        const kernel = this.container.make(KERNEL);
+        const config = this.container.make(Config);
 
         kernel.keys = config.get('keys', []);
 
@@ -49,8 +49,8 @@ export default class HttpServiceProvider extends ServiceProvider {
     }
 
     bootstrapRoutes() {
-        const router    = this.container.resolve(ROUTER);
-        const registry  = this.container.resolve(REGISTRY);
+        const router    = this.container.make(ROUTER);
+        const registry  = this.container.make(REGISTRY);
 
         registry.applyRoutes(router);
 

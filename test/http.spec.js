@@ -1,4 +1,4 @@
-import {container, singleton} from "@fusion.io/bare";
+import {container, singleton} from "@fusion.io/container";
 import {HttpServiceProvider, KERNEL, get} from "../src/Http";
 import {assert} from "chai";
 import request from "request-promise-native";
