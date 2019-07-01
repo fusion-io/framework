@@ -7,6 +7,34 @@ export const REGISTRY   = "Http.RouteRegistry";
 
 export default class HttpServiceProvider extends ServiceProvider {
 
+    /**
+     * All of the Kernel handlers
+     *
+     * @return {Array}
+     */
+    get handlers() {
+        return [
+
+        ]
+    }
+
+    get routeGroups() {
+        return {
+            "api": [
+
+            ],
+            "web": [
+
+            ]
+        }
+    }
+
+    get globalHandlers() {
+        return [
+
+        ]
+    }
+
     register() {
 
     }
