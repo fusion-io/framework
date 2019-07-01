@@ -15,7 +15,7 @@ class SimpleController {
     }
 }
 
-describe('Test HttpServiceProvider is implemented properly', () => {
+describe('HttpServiceProvider tests', () => {
     const sp = new HttpServiceProvider(container);
 
     sp.register();

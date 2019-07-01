@@ -1,7 +1,7 @@
 import ConfigManager from "../src/Config/ConfigManager";
 import {assert} from "chai";
 
-describe('Test ConfigManager', () => {
+describe('ConfigManager tests', () => {
     const manager = new ConfigManager({
         thisIsDefaultKey: 'value',
         nestedKey : {
