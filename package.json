@@ -7,7 +7,7 @@
     "dev": "nodemon --exec npm run test --watch=src ",
     "build": "babel src -d .",
     "prepublish": "npm run build",
-    "test": "mocha --exit --require=@babel/register --require=test/bootstrap.test.js"
+    "test": "mocha --exit --require=@babel/register"
   },
   "author": "",
   "license": "MIT",

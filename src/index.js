@@ -1,6 +1,9 @@
-export NestedHash from "./utils/NestedHash";
+import BaseNestedHash from "./utils/NestedHash";
+import BaseServiceProvider from "./utils/ServiceProvider";
 
-export ServiceProvider from "./utils/ServiceProvider";
+export const NestedHash = BaseNestedHash;
+
+export const ServiceProvider = BaseServiceProvider;
 
 export const Auth       = "Contracts.Auth";
 
