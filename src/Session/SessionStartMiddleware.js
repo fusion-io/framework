@@ -28,5 +28,7 @@ export default class SessionStartMiddleware {
         await this.koaSessionMiddleware(context, next);
 
         context.session[sessionNamespace] = sessionManager.serialize();
+
+        await context.session.commit();
     }
 }
