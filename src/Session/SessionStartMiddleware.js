@@ -14,7 +14,7 @@ export default class SessionStartMiddleware {
     async handle(context, next) {
         let rawSessionData = context.session[sessionNamespace] || [];
 
-        if (lodash.isArray(rawSessionData)) {
+        if (!lodash.isArray(rawSessionData)) {
             this.logger.warn('Session data seems not be serialized correctly. Re-initialized as empty.', [{rawSessionData}]);
             rawSessionData = [];
         }
@@ -22,7 +22,7 @@ export default class SessionStartMiddleware {
         this.sessionManager.load(rawSessionData);
 
         await this.koaSessionMiddleware(context, next);
-        
+
         context.session[sessionNamespace] = this.sessionManager.serialize();
     }
 }
