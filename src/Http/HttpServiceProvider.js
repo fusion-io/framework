@@ -1,9 +1,5 @@
-import {ServiceProvider} from "../index";
-import {Config} from "../index";
-
-export const ROUTER     = "Http.Router";
-export const KERNEL     = "Http.Kernel";
-export const REGISTRY   = "Http.RouteRegistry";
+import ServiceProvider from "../utils/ServiceProvider";
+import {Config, Kernel, Registry, Router} from "../Contracts";
 
 export default class HttpServiceProvider extends ServiceProvider {
 
@@ -40,7 +36,7 @@ export default class HttpServiceProvider extends ServiceProvider {
     }
 
     bootstrapKernel() {
-        const kernel = this.container.make(KERNEL);
+        const kernel = this.container.make(Kernel);
         const config = this.container.make(Config);
 
         kernel.keys = config.get('keys', []);
@@ -49,8 +45,8 @@ export default class HttpServiceProvider extends ServiceProvider {
     }
 
     bootstrapRoutes() {
-        const router    = this.container.make(ROUTER);
-        const registry  = this.container.make(REGISTRY);
+        const router    = this.container.make(Router);
+        const registry  = this.container.make(Registry);
 
         registry.applyRoutes(router);
 

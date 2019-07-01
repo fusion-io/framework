@@ -1,38 +1,16 @@
-import BaseNestedHash from "./utils/NestedHash";
-import BaseServiceProvider from "./utils/ServiceProvider";
+import NestedHash from "./utils/NestedHash";
+import ServiceProvider from "./utils/ServiceProvider";
+import {container, bind, singleton, bindInversion, singletonInversion} from "@fusion.io/container";
+import { HttpServiceProvider, get, post, put, patch, del, route, any, registry } from "./Http"
 
-export const NestedHash = BaseNestedHash;
+export {
+    // Utils package
+    NestedHash,
+    ServiceProvider,
 
-export const ServiceProvider = BaseServiceProvider;
+    // Container package
+    container, bind, singleton, bindInversion, singletonInversion,
 
-export const Auth       = "Contracts.Auth";
-
-export const Broadcast  = "Contracts.Broadcast";
-
-export const Cache      = "Contracts.Cache";
-
-export const Channel    = "Contracts.Channel";
-
-export const Config     = "Contracts.Config";
-
-export const Database   = "Contracts.Database";
-
-export const Event      = "Contracts.Event";
-
-export const Hasher     = "Contracts.Hasher";
-
-export const Logger     = "Contracts.Logger";
-
-export const Mail       = "Contracts.Mail";
-
-export const Queue      = "Contracts.Queue";
-
-export const Router     = "Contracts.Router";
-
-export const Serializer = "Contracts.Serializer";
-
-export const Session   = "Contracts.Session";
-
-export const Validator  = "Contracts.Validator";
-
-export const View       = "Contracts.View";
+    // Http Package
+    HttpServiceProvider, get, post, put, patch, del, route, any, registry
+}

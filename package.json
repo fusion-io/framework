@@ -26,7 +26,7 @@
     "sinon": "^7.3.2"
   },
   "dependencies": {
-    "@fusion.io/container": "^2.0.3",
+    "@fusion.io/container": "^2.0.7",
     "bcrypt": "^3.0.6",
     "koa-session": "^5.12.0",
     "lodash": "^4.17.11",

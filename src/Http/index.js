@@ -1,4 +1,4 @@
-import HttpServiceProvider, {KERNEL, ROUTER, REGISTRY} from "./HttpServiceProvider";
+import HttpServiceProvider from "./HttpServiceProvider";
 import RouteRegistry from "./RouteRegistry";
 
 export const registry = new RouteRegistry();
@@ -26,8 +26,5 @@ export const patch  = (url, middlewares = [], actionDependencies = []) => route(
 export const any    = (url, middlewares = [], actionDependencies = []) => route('any', url, middlewares, actionDependencies);
 
 export {
-    HttpServiceProvider,
-    KERNEL,
-    ROUTER,
-    REGISTRY
+    HttpServiceProvider
 };

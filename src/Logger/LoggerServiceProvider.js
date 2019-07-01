@@ -1,5 +1,6 @@
 import winston from "winston";
-import {ServiceProvider, Logger, Config} from "../index";
+import ServiceProvider from "../utils/ServiceProvider";
+import {Config, Logger} from "../Contracts";
 
 export default class LoggerServiceProvider extends ServiceProvider {
 

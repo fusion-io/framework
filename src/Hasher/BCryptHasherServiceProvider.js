@@ -1,5 +1,6 @@
 import BCryptHasher from "./BCryptHasher";
-import {Config, Hasher, ServiceProvider} from "../index";
+import {Config, Hasher} from "../Contracts";
+import ServiceProvider from "../utils/ServiceProvider";
 
 export default class BCryptHasherServiceProvider extends ServiceProvider {
 

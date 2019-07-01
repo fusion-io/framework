@@ -1,8 +1,8 @@
 import SessionManager from "./SessionManager";
 import SessionStartMiddleware from "./SessionStartMiddleware";
 import koaSessionFactory from "koa-session";
-import {KERNEL} from "../Http";
-import {Config, Logger, Session, ServiceProvider} from "../index";
+import {Config, Kernel, Logger, Session} from "../Contracts";
+import ServiceProvider from "../utils/ServiceProvider";
 
 export default class SessionServiceProvider extends ServiceProvider {
 
@@ -16,7 +16,7 @@ export default class SessionServiceProvider extends ServiceProvider {
                     ...config.get('http.session', {}),
                     autoCommit: false
                 },
-                container.make(KERNEL)
+                container.make(Kernel)
             );
 
             return new SessionStartMiddleware(
