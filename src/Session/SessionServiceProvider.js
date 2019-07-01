@@ -5,12 +5,12 @@ import SessionStartMiddleware from "./SessionStartMiddleware";
 import koaSessionFactory from "koa-session";
 import {KERNEL} from "../Http";
 
-export default class SessionsServiceProvider extends ServiceProvider {
+export default class SessionServiceProvider extends ServiceProvider {
 
     register() {
         this.container.singleton(Session, () => new SessionManager());
 
-        this.container.singleton(SessionStartMiddleware, (container) => {
+        this.container.singleton(this.container.constructor.guessTargetName(SessionStartMiddleware), (container) => {
             const koaSession = koaSessionFactory({}, container.resolve(KERNEL));
 
             return new SessionStartMiddleware(
