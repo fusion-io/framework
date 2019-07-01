@@ -21,6 +21,7 @@
     "koa": "^2.7.0",
     "koa-router": "^7.4.0",
     "mocha": "^6.1.4",
+    "nodemon": "^1.19.1",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7",
     "sinon": "^7.3.2"

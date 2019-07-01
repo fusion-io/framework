@@ -32,7 +32,10 @@ export default class HttpServiceProvider extends ServiceProvider {
     }
 
     register() {
+        // TODO we'll register all of necessary handlers
+        this.handlers.map(handler => {
 
+        });
     }
 
     bootstrapKernel() {
