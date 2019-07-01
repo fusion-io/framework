@@ -1,13 +1,13 @@
 import {namespace} from "@fusion.io/bare";
 import lodash from "lodash";
+import SessionManager from "./SessionManager";
 
 const sessionNamespace = '$$FUSION_$$SESSION';
 
 @namespace('Fusion.Session')
 export default class SessionStartMiddleware {
-    constructor(koaSessionMiddleware, sessionManager, logger) {
+    constructor(koaSessionMiddleware, logger) {
         this.koaSessionMiddleware = koaSessionMiddleware;
-        this.sessionManager       = sessionManager;
         this.logger               = logger;
     }
 
@@ -19,10 +19,14 @@ export default class SessionStartMiddleware {
             rawSessionData = [];
         }
 
-        this.sessionManager.load(rawSessionData);
+        let sessionManager = new SessionManager();
+
+        sessionManager.load(rawSessionData);
+
+        context.Session = sessionManager;
 
         await this.koaSessionMiddleware(context, next);
 
-        context.session[sessionNamespace] = this.sessionManager.serialize();
+        context.session[sessionNamespace] = sessionManager.serialize();
     }
 }
