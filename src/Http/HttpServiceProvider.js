@@ -1,4 +1,4 @@
-import ServiceProvider from "../index";
+import {ServiceProvider} from "../index";
 import {Config} from "../index";
 
 export const ROUTER     = "Http.Router";

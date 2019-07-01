@@ -2,8 +2,7 @@ import SessionManager from "./SessionManager";
 import SessionStartMiddleware from "./SessionStartMiddleware";
 import koaSessionFactory from "koa-session";
 import {KERNEL} from "../Http";
-import ServiceProvider from "../utils/ServiceProvider";
-import {Config, Logger, Session} from "../index";
+import {Config, Logger, Session, ServiceProvider} from "../index";
 
 export default class SessionServiceProvider extends ServiceProvider {
 
