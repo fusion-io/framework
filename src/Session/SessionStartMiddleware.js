@@ -1,10 +1,8 @@
-import {namespace} from "@fusion.io/bare";
 import lodash from "lodash";
 import SessionManager from "./SessionManager";
 
 const sessionNamespace = '$$FUSION_$$SESSION';
 
-@namespace('Fusion.Session')
 export default class SessionStartMiddleware {
     constructor(koaSessionMiddleware, logger) {
         this.koaSessionMiddleware = koaSessionMiddleware;
