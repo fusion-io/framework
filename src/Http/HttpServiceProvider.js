@@ -1,4 +1,5 @@
 import ServiceProvider from "@fusion.io/bare/utils/ServiceProvider";
+import {Config} from "@fusion.io/bare";
 
 export const ROUTER     = "Http.Router";
 export const KERNEL     = "Http.Kernel";
@@ -11,12 +12,17 @@ export default class HttpServiceProvider extends ServiceProvider {
     }
 
     bootstrapKernel() {
+        const kernel = this.container.resolve(KERNEL);
+        const config = this.container.resolve(Config);
+
+        kernel.keys = config.get('keys', []);
+
         return this.container.resolve('Http.Kernel');
     }
 
     bootstrapRoutes() {
-        const router    = this.container.resolve('Http.Router');
-        const registry  = this.container.resolve('Http.RouteRegistry');
+        const router    = this.container.resolve(ROUTER);
+        const registry  = this.container.resolve(REGISTRY);
 
         registry.applyRoutes(router);
 

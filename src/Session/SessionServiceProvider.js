@@ -1,5 +1,5 @@
 import ServiceProvider from "@fusion.io/bare/utils/ServiceProvider";
-import {Session} from "@fusion.io/bare";
+import {Session, Logger, Config} from "@fusion.io/bare";
 import SessionManager from "./SessionManager";
 import SessionStartMiddleware from "./SessionStartMiddleware";
 import koaSessionFactory from "koa-session";
@@ -9,13 +9,18 @@ export default class SessionServiceProvider extends ServiceProvider {
 
     register() {
         this.container.singleton(Session, () => new SessionManager());
-
         this.container.singleton(this.container.constructor.guessTargetName(SessionStartMiddleware), (container) => {
-            const koaSession = koaSessionFactory({}, container.resolve(KERNEL));
+
+            const config     = container.resolve(Config);
+            const koaSession = koaSessionFactory(
+                config.get('http.session', {}),
+                container.resolve(KERNEL)
+            );
 
             return new SessionStartMiddleware(
                 koaSession,
-                container.resolve(Session)
+                container.resolve(Session),
+                container.resolve(Logger)
             )
         });
     }
