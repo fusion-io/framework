@@ -29,6 +29,6 @@ export default class SessionStartMiddleware {
 
         context.session[sessionNamespace] = sessionManager.serialize();
 
-        await context.session.commit();
+        await context.session.manuallyCommit();
     }
 }
