@@ -8,7 +8,7 @@ import {KERNEL} from "../Http";
 export default class SessionServiceProvider extends ServiceProvider {
 
     register() {
-        this.container.singleton(Session, () => new SessionManager());
+        this.container.bind(Session, () => new SessionManager());
         this.container.singleton(this.container.constructor.guessTargetName(SessionStartMiddleware), (container) => {
 
             const config     = container.resolve(Config);
