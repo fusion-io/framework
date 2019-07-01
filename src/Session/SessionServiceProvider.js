@@ -16,13 +16,13 @@ export default class SessionServiceProvider extends ServiceProvider {
                     ...config.get('http.session', {}),
                     autoCommit: false
                 },
-                container.resolve(KERNEL)
+                container.make(KERNEL)
             );
 
             return new SessionStartMiddleware(
                 koaSession,
-                container.resolve(Session),
-                container.resolve(Logger)
+                container.make(Session),
+                container.make(Logger)
             )
         });
     }

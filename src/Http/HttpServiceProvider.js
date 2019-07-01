@@ -45,7 +45,7 @@ export default class HttpServiceProvider extends ServiceProvider {
 
         kernel.keys = config.get('keys', []);
 
-        return this.container.resolve('Http.Kernel');
+        return kernel;
     }
 
     bootstrapRoutes() {
