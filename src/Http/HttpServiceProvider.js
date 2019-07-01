@@ -1,61 +1,104 @@
 import ServiceProvider from "../utils/ServiceProvider";
-import {Config, Kernel, Registry, Router} from "../Contracts";
+import {Config, Kernel, Router} from "../Contracts";
+import lodash from 'lodash';
+import HttpResolver from "./HttpResolver";
 
+/**
+ * Provide the Http Kernel & Http Router  configuration & behaviors
+ *
+ */
 export default class HttpServiceProvider extends ServiceProvider {
 
     /**
-     * All of the Kernel handlers
+     * List of available controllers
      *
      * @return {Array}
      */
-    get handlers() {
+    controllers() {
         return [
 
         ]
     }
 
-    get routeGroups() {
+    /**
+     * The middleware groups.
+     * It will helps us to work more efficient when applying middlewares by unit of logic
+     *
+     * @return {{}}
+     */
+    middlewareGroups() {
         return {
-            "api": [
 
-            ],
-            "web": [
-
-            ]
         }
     }
 
-    get globalHandlers() {
+    /**
+     * The list of global middleware that will be used
+     *
+     * @return {Array}
+     */
+    globalMiddlewares() {
         return [
 
         ]
     }
 
+    /**
+     * Register all of the middleware group
+     *
+     */
     register() {
-        // TODO we'll register all of necessary handlers
-        this.handlers.map(handler => {
-
+        lodash.forIn(this.middlewareGroups(), (middlewares, groupName) => {
+            this.container.value(HttpResolver.makeKeyNameForMiddlewareGroup(groupName), middlewares);
         });
     }
 
+    /**
+     * Bootstrap the HttpKernel
+     *
+     * @return {*|void}
+     */
     bootstrapKernel() {
-        const kernel = this.container.make(Kernel);
-        const config = this.container.make(Config);
+        const kernel    = this.container.make(Kernel);
+        const config    = this.container.make(Config);
+        const resolver  = this.container.make(HttpResolver);
 
         kernel.keys = config.get('keys', []);
+
+        // Apply global middlewares to the Kernel
+        resolver.resolveMiddleware(this.globalMiddlewares())
+            .forEach(middleware => kernel.use(middleware))
+        ;
 
         return kernel;
     }
 
+    /**
+     * Bootstrap the router
+     *
+     * @return {*|void}
+     */
     bootstrapRoutes() {
-        const router    = this.container.make(Router);
-        const registry  = this.container.make(Registry);
+        const resolver          = this.container.make(HttpResolver);
+        const routeDefinitions  = lodash.flatten(
+            this.controllers()
+                .map(Controller => resolver.resolveController(Controller))
+        );
 
-        registry.applyRoutes(router);
+        const router = this.container.make(Router);
+
+        routeDefinitions.forEach(routeDefinition => {
+            const {method, url, handler, middlewares } = routeDefinition;
+
+            router[method](url, ...middlewares, handler);
+        });
 
         return router;
     }
 
+    /**
+     * @inheritDoc
+     */
     boot() {
         const kernel = this.bootstrapKernel();
         const router = this.bootstrapRoutes();
