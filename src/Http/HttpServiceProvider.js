@@ -2,23 +2,13 @@ import ServiceProvider from "../utils/ServiceProvider";
 import {Config, Kernel, Router} from "../Contracts";
 import lodash from 'lodash';
 import HttpResolver from "./HttpResolver";
+import "./UrlManager";
 
 /**
  * Provide the Http Kernel & Http Router  configuration & behaviors
  *
  */
 export default class HttpServiceProvider extends ServiceProvider {
-
-    /**
-     * List of available controllers
-     *
-     * @return {Array}
-     */
-    controllers() {
-        return [
-
-        ]
-    }
 
     /**
      * The middleware groups.
@@ -38,6 +28,17 @@ export default class HttpServiceProvider extends ServiceProvider {
      * @return {Array}
      */
     globalMiddlewares() {
+        return [
+
+        ]
+    }
+
+    /**
+     * List of available controllers
+     *
+     * @return {Array}
+     */
+    routeGroups() {
         return [
 
         ]
@@ -74,24 +75,27 @@ export default class HttpServiceProvider extends ServiceProvider {
     }
 
     /**
-     * Bootstrap the router
+     * Bootstrap the router(s).
      *
      * @return {*|void}
      */
     bootstrapRoutes() {
-        const resolver          = this.container.make(HttpResolver);
-        const routeDefinitions  = lodash.flatten(
-            this.controllers()
-                .map(Controller => resolver.resolveController(Controller))
-        );
+        const config    = this.container.make(Config);
+        const resolver  = this.container.make(HttpResolver);
+        const router    = this.container.make(Router);
 
-        const router = this.container.make(Router);
+        this.controllers()
+            .map(Controller => resolver.resolveController(Controller))
+            .forEach(routeDefinitions => {
 
-        routeDefinitions.forEach(routeDefinition => {
-            const {method, url, handler, middlewares } = routeDefinition;
+                const overridePathMap = config.get('http.url.pathMap', {});
+                const replace         = config.get('http.url.replace');
 
-            router[method](url, ...middlewares, handler);
-        });
+                routeDefinitions.override(overridePathMap, replace);
+
+                routeDefinitions.apply(router);
+            })
+        ;
 
         return router;
     }

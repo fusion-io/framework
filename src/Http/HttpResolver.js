@@ -1,5 +1,6 @@
 import {container, singleton} from "@fusion.io/container";
 import lodash from "lodash";
+import RouteDefinitions from "./RouteDefinitions";
 
 @singleton()
 export default class HttpResolver {
@@ -49,31 +50,35 @@ export default class HttpResolver {
         }
 
         // Otherwise, we'll not consider it as a middleware
-        throw new Error(`E_HTTP_RESOLVER: ${middleware} is not a middleware`);
+        throw new Error(`E_HTTP_RESOLVER: [${middleware}] is not a middleware`);
     }
 
     /**
      *
      * @param ControllerSymbol
-     * @return {{method, url, handler: *, middlewares: *}[]}
+     * @return {RouteDefinitions}
      */
     resolveController(ControllerSymbol) {
 
         // Reading the signatures
         const routesSignature       = ControllerSymbol.routes || [];
         const middlewaresSignature  = ControllerSymbol.middlewares || { '*': [] };
+        const routeNamesSignature   = ControllerSymbol.routeNames || {};
 
         // Extract the controller level middleware first
         const controllerLevelMiddlewares = middlewaresSignature['*'];
 
         // With each route signature, we map it back to have a cleaner route definition
-        return routesSignature.map(routeSignature => {
+        const definitions = routesSignature.map(routeSignature => {
             const {action, method, url}     = routeSignature;
             const actionLevelMiddlewares    = middlewaresSignature[action] || [];
+            const name                      = routeNamesSignature[action] ||
+                this.getDefaultRouteName(ControllerSymbol.name, action);
 
             return {
                 method: method.toLowerCase(),
                 url,
+                name,
                 handler: this.wrapToRouteHandler(ControllerSymbol, routeSignature),
 
                 // We'll combine middlewares from the controller definition
@@ -82,8 +87,20 @@ export default class HttpResolver {
                     ...controllerLevelMiddlewares,
                     ...actionLevelMiddlewares
                 ])
-            }
+            };
         });
+
+        return new RouteDefinitions(definitions);
+    }
+
+    /**
+     *
+     * @param ControllerSymbol
+     * @param action
+     * @return {string}
+     */
+    getDefaultRouteName(ControllerSymbol, action) {
+        return `${ControllerSymbol}.${action}`;
     }
 
     /**
@@ -154,3 +171,16 @@ export const patch  = (url, ...methodDependencies) => route('patch' , url, ...me
 export const del    = (url, ...methodDependencies) => route('delete', url, ...methodDependencies);
 export const all    = (url, ...methodDependencies) => route('all'   , url, ...methodDependencies);
 
+/**
+ * Route name signature decorator
+ *
+ * @param name
+ * @return {Function}
+ */
+export const routeName = name => (target, method) => {
+    let routeNames = target.constructor.routeNames || {};
+
+    routeNames[method] = name;
+
+    target.constructor.routeNames = routeNames;
+};
