@@ -1,7 +1,10 @@
 import ServiceProvider from "../utils/ServiceProvider";
-import {Config, Kernel, Router} from "../Contracts";
+import {Config, Kernel, Router, Url} from "../Contracts";
 import lodash from 'lodash';
 import HttpResolver from "./HttpResolver";
+import KoaRouter from "koa-router";
+import Koa from "koa";
+import UrlManager from "./UrlManager";
 
 /**
  * Provide the Http Kernel & Http Router  configuration & behaviors
@@ -10,26 +13,13 @@ import HttpResolver from "./HttpResolver";
 export default class HttpServiceProvider extends ServiceProvider {
 
     /**
-     * List of available controllers
-     *
-     * @return {Array}
-     */
-    controllers() {
-        return [
-
-        ]
-    }
-
-    /**
      * The middleware groups.
      * It will helps us to work more efficient when applying middlewares by unit of logic
      *
      * @return {{}}
      */
     middlewareGroups() {
-        return {
-
-        }
+        return { }
     }
 
     /**
@@ -38,16 +28,30 @@ export default class HttpServiceProvider extends ServiceProvider {
      * @return {Array}
      */
     globalMiddlewares() {
-        return [
-
-        ]
+        return []
     }
 
     /**
-     * Register all of the middleware group
+     * List of available controllers
+     *
+     * @return {{}}
+     */
+    routeGroups() {
+        return [];
+    }
+
+    /**
+     * Register the http services
      *
      */
     register() {
+        this.container.value(Kernel, new Koa());
+        this.container.value(Router, new KoaRouter());
+
+        this.container.singleton(Url, (container) => {
+            return new UrlManager(container.make(Router));
+        });
+
         lodash.forIn(this.middlewareGroups(), (middlewares, groupName) => {
             this.container.value(HttpResolver.makeKeyNameForMiddlewareGroup(groupName), middlewares);
         });
@@ -66,7 +70,8 @@ export default class HttpServiceProvider extends ServiceProvider {
         kernel.keys = config.get('keys', []);
 
         // Apply global middlewares to the Kernel
-        resolver.resolveMiddleware(this.globalMiddlewares())
+        resolver
+            .resolveMiddleware(this.globalMiddlewares())
             .forEach(middleware => kernel.use(middleware))
         ;
 
@@ -74,26 +79,41 @@ export default class HttpServiceProvider extends ServiceProvider {
     }
 
     /**
-     * Bootstrap the router
+     * Bootstrap the router(s).
      *
      * @return {*|void}
      */
     bootstrapRoutes() {
-        const resolver          = this.container.make(HttpResolver);
-        const routeDefinitions  = lodash.flatten(
-            this.controllers()
-                .map(Controller => resolver.resolveController(Controller))
-        );
+        const router    = this.container.make(Router);
 
-        const router = this.container.make(Router);
+        lodash.forEach(this.routeGroups(), routeGroup => {
+            const groupRouter = new KoaRouter({prefix: routeGroup.prefix || ''});
 
-        routeDefinitions.forEach(routeDefinition => {
-            const {method, url, handler, middlewares } = routeDefinition;
+            this.bootstrapRouteGroup(routeGroup, groupRouter);
 
-            router[method](url, ...middlewares, handler);
+            router.use(groupRouter.routes());
         });
 
         return router;
+    }
+
+    /**
+     *
+     * @param middlewares
+     * @param controllers
+     * @param groupRouter
+     */
+    bootstrapRouteGroup({middlewares = [], controllers = []}, groupRouter) {
+        const resolver        = this.container.make(HttpResolver);
+
+        groupRouter.use(resolver.resolveMiddleware(middlewares));
+
+        controllers
+            .map(Controller => resolver.resolveController(Controller))
+            .forEach(routeDefinitions => {
+                routeDefinitions.apply(groupRouter);
+            })
+        ;
     }
 
     /**
