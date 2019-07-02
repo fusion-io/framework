@@ -1,7 +1,3 @@
-import {singletonInversion} from "@fusion.io/container";
-import {Router, Url} from "../Contracts";
-
-@singletonInversion(Url, Router)
 export default class UrlManager {
 
     constructor(router) {
