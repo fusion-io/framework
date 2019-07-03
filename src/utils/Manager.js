@@ -51,7 +51,7 @@ export default class Manager {
             throw new Error(`E_MANAGER: The driver [${driverName}] is not supported`);
         }
 
-        this.adapters[adapterName] = this.drivers[driverName](adapterName, this);
+        this.adapters[adapterName] = this.drivers[driverName].install(adapterName, this);
 
         return this.adapters[adapterName];
     }
@@ -79,7 +79,7 @@ export default class Manager {
      * Register a driver to the manager. So it will be supported
      *
      * @param {string} driverName
-     * @param {function} driver
+     * @param {{install: function}} driver
      * @return {Manager}
      */
     registerDriver(driverName, driver) {
