@@ -100,7 +100,8 @@ export default class Manager {
     }
 
     /**
-     * Get the default adapter name.
+     * Get the default adapter name
+     *
      * @abstract
      * @return {string}
      */
