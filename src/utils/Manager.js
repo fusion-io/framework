@@ -83,7 +83,7 @@ export default class Manager {
      * @return {Manager}
      */
     registerDriver(driverName, driver) {
-        this.drivers[driver] = driver;
+        this.drivers[driverName] = driver;
 
         return this;
     }
