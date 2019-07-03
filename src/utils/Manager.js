@@ -51,7 +51,7 @@ export default class Manager {
             throw new Error(`E_MANAGER: The driver [${driverName}] is not supported`);
         }
 
-        this.adapters[adapterName] = this.drivers[driverName](this);
+        this.adapters[adapterName] = this.drivers[driverName](adapterName, this);
 
         return this.adapters[adapterName];
     }
@@ -93,7 +93,7 @@ export default class Manager {
      *
      * @abstract
      * @param adapterName
-     * @return {function}
+     * @return {string}
      */
     resolveDriver(adapterName) {
         // Abstract method

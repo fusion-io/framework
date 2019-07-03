@@ -1,42 +1,34 @@
 import knex from "knex";
+import Manager from "../utils/Manager";
 
-export default class DatabaseManager {
+export default class DatabaseManager extends Manager {
 
     constructor({connections, defaultConnection}) {
+        super();
+
         this.connectionConfig   = connections;
         this.defaultConnection  = defaultConnection;
-        this.connections        = {};
+
+        this.drivers['knex'] = (connectionName) => {
+            const connectionConfig = this.connectionConfig[connectionName];
+
+            if (!connectionConfig) {
+                throw new Error(`E_DATABASE: The connection [${connectionName}] is not configured`);
+            }
+
+            return knex(connectionConfig);
+        }
     }
 
     connection(connectionName = null) {
-
-        if (!connectionName) {
-            connectionName = this.defaultConnection;
-        }
-
-        if (!this.created(connectionName)) {
-            this.connections[connectionName] = this.createConnection(this.configOf(connectionName));
-        }
-
-        return this.connections[connectionName];
+        return this.adapter(connectionName);
     }
 
-    configOf(connectionName) {
-
-        const config = this.connectionConfig[connectionName];
-
-        if (!config) {
-            throw new Error(`E_DATABASE: Database [${connectionName}] is not configured`);
-        }
-
-        return this.connectionConfig[connectionName];
+    getDefaultAdapterName() {
+        return this.defaultConnection;
     }
 
-    created(connectionName) {
-        return !!this.connections[connectionName];
-    }
-
-    createConnection(config) {
-        return knex(config)
+    resolveDriver(connectionName) {
+        return 'knex';
     }
 }
