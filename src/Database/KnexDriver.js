@@ -7,7 +7,7 @@ export default class KnexDriver {
     }
 
     install(connectionName) {
-        const connectionConfig = this.config.get(`database.connections.${connectionName}`);
+        const connectionConfig = this.config[connectionName];
 
         if (!connectionConfig) throw new Error(`E_DATABASE: Connection ${connectionName} is not configured`);
 
