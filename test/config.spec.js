@@ -16,7 +16,8 @@ describe('ConfigManager tests', () => {
     });
 
     it('can switch environment', () => {
-        manager.setEnv('otherEnv', {
+        manager.setEnv('otherEnv');
+        manager.merge({
             nestedKey: {
                 value2: "Overwrite from environment"
             }
