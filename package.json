@@ -11,7 +11,7 @@
     "test:watch": "nodemon --exec npm run test --watch src ",
     "test": "mocha --exit --require=@babel/register"
   },
-  "author": "",
+  "author": "rikky <son.levuthai@gmail.com>",
   "license": "MIT",
   "devDependencies": {
     "@babel/cli": "^7.4.4",
