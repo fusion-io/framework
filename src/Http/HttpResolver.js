@@ -66,7 +66,7 @@ export default class HttpResolver {
         const routeNamesSignature   = ControllerSymbol.routeNames || {};
 
         // Extract the controller level middleware first
-        const controllerLevelMiddlewares = middlewaresSignature['*'];
+        const controllerLevelMiddlewares = middlewaresSignature['*'] || [];
 
         // With each route signature, we map it back to have a cleaner route definition
         const definitions = routesSignature.map(routeSignature => {
