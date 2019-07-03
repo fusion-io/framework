@@ -8,10 +8,8 @@ export default class ConfigManager extends NestedHash {
         this.currentEnv = '';
     }
 
-    setEnv(environmentName, envConfig) {
+    setEnv(environmentName) {
         this.currentEnv = environmentName;
-
-        this.merge(envConfig);
 
         return this;
     }
