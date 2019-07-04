@@ -8,18 +8,15 @@ export default class BlackHoleStorage {
     }
 
     async remove(key) {
-
     }
 
     async flush() {
-
     }
 
     async cleanUp() {
-
     }
 
-    getByTag(tag) {
+    async getByTag(tag) {
         return [];
     }
 

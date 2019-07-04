@@ -22,7 +22,7 @@ export const Serializer = "Fusion.Serializer";
 
 export const Session    = "Fusion.Session";
 
-export const Storage      = "Fusion.Cache";
+export const Storage    = "Fusion.Cache";
 
 export const Validator  = "Fusion.Validator";
 

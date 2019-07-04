@@ -25,7 +25,7 @@ describe('Storage tests', () => {
                 it('can set and get an item', async () => {
                     await driver.store('foo', 'bar');
 
-                    assert.equal(await driver.get('foo'), 'bar');
+                    assert.deepEqual(await driver.get('foo'), {key: 'foo', value: 'bar'});
                 });
 
                 it('can remove an item', async () => {
@@ -46,7 +46,7 @@ describe('Storage tests', () => {
                         await driver.store('foo', 'bar', {tags: 'tag'});
                         await driver.store('hello', 'world', {tags: 'tag'});
 
-                        assert.deepEqual(driver.getByTag('tag'), ['bar', 'world']);
+                        assert.deepEqual(await driver.getByTag('tag'), [{key: 'foo', value: 'bar'}, {key: 'hello', value: 'world'}]);
                     });
                 }
             });

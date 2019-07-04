@@ -71,7 +71,7 @@ export default class StorageManager extends Manager {
             return valueIfNotExisted;
         }
 
-        return await deserializer(serializedValue);
+        return await deserializer(serializedValue.value);
     }
 
     /**
@@ -90,14 +90,14 @@ export default class StorageManager extends Manager {
      * @return {Promise<*>}
      */
     async getByTag(tag, deserializer = v => JSON.parse(v)) {
-        if (!this.adapter().taggable()) {
+        if (!this.adapter().getByTag) {
             return [];
         }
 
         const taggedResults = await this.adapter().getByTag(tag);
 
         return await Promise
-            .all(taggedResults.map(serializedResult => deserializer(serializedResult)))
+            .all(taggedResults.map(serializedResult => deserializer(serializedResult.value)))
         ;
     }
 }
