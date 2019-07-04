@@ -10,7 +10,7 @@ export default class MemoryStorage {
      *
      * @param key
      * @param value
-     * @param {{value: string, tags: array, ttl: number}} options . ttl (seconds)
+     * @param {{tags: array|string, ttl: number} | *} options . ttl (seconds)
      * @return {Promise<void>}
      */
     async store(key, value, options = {}) {
@@ -37,7 +37,7 @@ export default class MemoryStorage {
             return null;
         }
 
-        if (this.expired(result)) {
+        if (MemoryStorage.expired(result)) {
             return null;
         }
 
@@ -67,7 +67,7 @@ export default class MemoryStorage {
      */
     async cleanUp() {
         this.internalStore.forEach((item, key) => {
-            if (this.expired(item)) {
+            if (MemoryStorage.expired(item)) {
                 this.internalStore.delete(key)
             }
         });
@@ -83,7 +83,7 @@ export default class MemoryStorage {
     async getByTag(tag) {
         let items = [];
         this.internalStore.forEach((item, key) => {
-            if (item.tags.includes(tag) && !this.expired(item)) {
+            if (item.tags.includes(tag) && !MemoryStorage.expired(item)) {
                 items.push({value: item.value, key});
             }
         });
@@ -98,7 +98,7 @@ export default class MemoryStorage {
      * @param ttl
      * @return {boolean}
      */
-    expired({savedAt, ttl}) {
+    static expired({savedAt, ttl}) {
         if (ttl <= 0) {
             return false;
         }

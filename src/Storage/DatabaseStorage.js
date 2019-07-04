@@ -41,7 +41,7 @@ export default class DatabaseStorage {
      * @param tags
      * @return {string}
      */
-    buildTagFieldValue(tags) {
+    static buildTagFieldValue(tags) {
         return '|' + tags.join('|') + '|';
     }
 
@@ -66,7 +66,7 @@ export default class DatabaseStorage {
      *
      * @param key
      * @param value
-     * @param {{value: string, tags: array, ttl: number}} options . ttl (seconds)
+     * @param {{value: string, tags: array|string, ttl: number}} options . ttl (seconds)
      * @return {Promise<void>}
      */
     async store(key, value, options = {}) {
@@ -77,7 +77,7 @@ export default class DatabaseStorage {
             tags = [tags];
         }
 
-        const tagFieldValue = this.buildTagFieldValue(tags);
+        const tagFieldValue = DatabaseStorage.buildTagFieldValue(tags);
 
         const isExisted = await this.connection
             .from(this.tableName)
