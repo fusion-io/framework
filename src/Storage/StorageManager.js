@@ -1,6 +1,7 @@
 import Manager from "../utils/Manager";
 import BlackHoleStorage from "./BlackHoleStorage";
 import MemoryStorage from "./MemoryStorage";
+import DatabaseStorage from "./DatabaseStorage";
 
 /**
  * Manager of the storage adapters
@@ -18,9 +19,26 @@ export default class StorageManager extends Manager {
         //     database, redis, memcached, mongodb
         this.drivers = {
             // "filesystem" : FileSystemStorage,
+            'database'   : DatabaseStorage,
             "memory"     : MemoryStorage,
             "blackhole"  : BlackHoleStorage
         }
+    }
+
+    /**
+     * Get the configuration of a given adapter
+     *
+     * @param adapterName
+     * @return {*}
+     */
+    configOf(adapterName) {
+        const adapterConfig = this.adapterConfigs[adapterName];
+
+        if (!adapterConfig) {
+            throw new Error(`E_STORAGE: Adapter ${adapterName} is not configured`);
+        }
+
+        return adapterConfig;
     }
 
     /**
@@ -35,11 +53,7 @@ export default class StorageManager extends Manager {
      */
     resolveDriver(adapterName) {
 
-        const adapterConfig = this.adapterConfigs[adapterName];
-
-        if (!adapterConfig) {
-            throw new Error(`E_STORAGE: Adapter ${adapterName} is not configured`);
-        }
+        const adapterConfig = this.configOf(adapterName);
 
         return adapterConfig['driver'];
     }
@@ -52,7 +66,7 @@ export default class StorageManager extends Manager {
      * @param opts
      * @return {Promise<void>}
      */
-    async store(key, value, serializer = v => JSON.stringify(v), opts = {}) {
+    async store(key, value, opts = {}, serializer = v => JSON.stringify(v)) {
         const serializedValue = await serializer(value);
         await this.adapter().store(key, serializedValue, opts);
     }
@@ -97,7 +111,7 @@ export default class StorageManager extends Manager {
         const taggedResults = await this.adapter().getByTag(tag);
 
         return await Promise
-            .all(taggedResults.map(serializedResult => deserializer(serializedResult.value)))
+            .all(taggedResults.map(serializedResult => deserializer(serializedResult.value, serializedResult.key)))
         ;
     }
 }
