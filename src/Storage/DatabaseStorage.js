@@ -3,28 +3,53 @@ import {container} from "@fusion.io/container";
 import {Database} from "../Contracts";
 
 export default class DatabaseStorage {
+
+    /**
+     *
+     * @param connection
+     */
     constructor(connection) {
         this.connection = connection;
         this.tableName  = 'storage';
         this.ttl        = 60 * 60 * 24; // One day
     }
 
+    /**
+     *
+     * @param tableName
+     * @return {DatabaseStorage}
+     */
     setTable(tableName) {
         this.tableName = tableName;
 
         return this;
     }
 
+    /**
+     *
+     * @param ttl
+     * @return {DatabaseStorage}
+     */
     setDefaultTTL(ttl) {
         this.ttl = ttl;
 
         return this;
     }
 
+    /**
+     *
+     * @param tags
+     * @return {string}
+     */
     buildTagFieldValue(tags) {
         return '|' + tags.join('|') + '|';
     }
 
+    /**
+     *
+     * @param options
+     * @return {*}
+     */
     guessTTL(options) {
         if (!options.ttl) {
             return this.ttl;
