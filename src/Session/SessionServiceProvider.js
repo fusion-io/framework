@@ -1,8 +1,10 @@
 import SessionManager from "./SessionManager";
-import SessionStartMiddleware from "./SessionStartMiddleware";
 import koaSessionFactory from "koa-session";
-import {Config, Kernel, Logger, Session} from "../Contracts";
+import {Config, Session, Storage} from "../Contracts";
 import ServiceProvider from "../utils/ServiceProvider";
+import StorageBridgeSessionStore from "./StorageBridgeSessionStore";
+import SessionStartMiddleware from "./SessionStartMiddleware";
+import Kernel from "../Http/Kernel";
 
 export default class SessionServiceProvider extends ServiceProvider {
 
@@ -10,20 +12,14 @@ export default class SessionServiceProvider extends ServiceProvider {
         this.container.bind(Session, () => new SessionManager());
         this.container.singleton(SessionStartMiddleware, (container) => {
 
-            const config     = container.make(Config);
-            const koaSession = koaSessionFactory(
-                {
-                    ...config.get('http.session.options'),
-                    autoCommit: false
-                },
-                container.make(Kernel)
-            );
+            const config        = container.make(Config);
+            const storeManager  = container.make(Storage);
+            const bridge        = new StorageBridgeSessionStore(storeManager);
 
-            return new SessionStartMiddleware(
-                koaSession,
-                container.make(Session),
-                container.make(Logger)
-            )
+            return koaSessionFactory({
+                    ...config.get('http.session.options'),
+                    store: bridge
+                }, container.make(Kernel));
         });
     }
 }

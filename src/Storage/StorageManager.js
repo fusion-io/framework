@@ -114,4 +114,8 @@ export default class StorageManager extends Manager {
             .all(taggedResults.map(serializedResult => deserializer(serializedResult.value, serializedResult.key)))
         ;
     }
+
+    async touch(key) {
+        await this.adapter().touch(key);
+    }
 }

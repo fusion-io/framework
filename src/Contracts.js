@@ -30,8 +30,4 @@ export const View       = "Fusion.View";
 
 //
 
-export const Router     = "Http.Router";
-
-export const Kernel     = "Http.Kernel";
-
-export const Url        = "Http.Url";
+export const Url        = "Fusion.Url";

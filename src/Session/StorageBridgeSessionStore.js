@@ -1,27 +1,33 @@
+/**
+ * An adapter for koa-session store which is bridged to our Storage service
+ */
 export default class StorageBridgeSessionStore {
+
     constructor(storage) {
         this.storage = storage;
-        this.using   = null;
     }
 
-    use(storageName) {
-         this.using = storageName;
-
-         return this;
+    async get(key) {
+        return await this.storage.get(StorageBridgeSessionStore.resolveStorageKey(key), {});
     }
 
-    get(key, maxAge, { rolling }) {
-        return this.storage.set(key)
+    async set(key, sess, maxAge, {rolling, changed}) {
+        if (changed) {
+            await this.storage.store(StorageBridgeSessionStore.resolveStorageKey(key), sess, {ttl: maxAge});
+        }
+
+        if (rolling) {
+            await this.storage.touch(StorageBridgeSessionStore.resolveStorageKey(key));
+        }
+
+        return sess;
     }
 
-    set(key, oldSession, maxAge, { rolling, changed }) {
-
-    }
-    destroy(key) {
-
+    async destroy(key) {
+        await this.storage.remove(StorageBridgeSessionStore.resolveStorageKey(key));
     }
 
-    resolveStorageKey(key) {
-        return `fusion${key}`
+    static resolveStorageKey(key) {
+        return `fusion--session--${key}`;
     }
 }
