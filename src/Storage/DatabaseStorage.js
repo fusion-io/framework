@@ -11,7 +11,7 @@ export default class DatabaseStorage {
     constructor(connection) {
         this.connection = connection;
         this.tableName  = 'storage';
-        this.ttl        = 60 * 60 * 24; // One day
+        this.ttl        = 1000 * 60 * 60 * 24;
     }
 
     /**
@@ -71,7 +71,9 @@ export default class DatabaseStorage {
      */
     async store(key, value, options = {}) {
         let tags        = options.tags || [];
-        let expiredAt   = Date.now() + (this.guessTTL(options) * 1000);
+        let ttl         = this.guessTTL(options);
+        let now         = Date.now();
+        let expiredAt   = now + ttl;
 
         if (!lodash.isArray(tags)) {
             tags = [tags];
@@ -87,15 +89,28 @@ export default class DatabaseStorage {
 
         if (isExisted) {
             return await this.connection
-                .update({value, tags: tagFieldValue, expiredAt})
+                .update({value, tags: tagFieldValue, updatedAt: now, expiredAt, ttl})
                 .where({key})
                 .table(this.tableName)
             ;
         }
 
         await this.connection
-            .insert({key, value, tags: tagFieldValue, expiredAt})
+            .insert({key, value, tags: tagFieldValue, createdAt: now, updatedAt: now, expiredAt, ttl})
             .into(this.tableName)
+        ;
+    }
+
+    async touch(key) {
+        const now = Date.now();
+        await this.connection
+            .where({key})
+            .where('expiredAt', '>=', now)
+            .update({
+                updatedAt: now,
+                expiredAt: this.connection.raw('?? + ??', [now, 'ttl'])
+            })
+            .table(this.tableName)
         ;
     }
 

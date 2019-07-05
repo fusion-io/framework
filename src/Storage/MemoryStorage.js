@@ -16,13 +16,33 @@ export default class MemoryStorage {
     async store(key, value, options = {}) {
         let tags        = options.tags || [];
         let ttl         = options.ttl  || 0;
-        let savedAt     = new Date().getTime();
+        let savedAt     = Date.now();
 
         if (!lodash.isArray(tags)) {
             tags = [tags];
         }
 
         this.internalStore.set(key, {value, tags, savedAt, ttl});
+    }
+
+    /**
+     * Update the item with the new timestamp.
+     *
+     * @param key
+     * @return {Promise<null>}
+     */
+    async touch(key) {
+        const result = this.internalStore.get(key);
+
+        if (!result) {
+            return null;
+        }
+
+        if (MemoryStorage.expired(result)) {
+            return null;
+        }
+
+        this.internalStore.set(key, {...result, savedAt: Date.now()});
     }
 
     /**
@@ -102,7 +122,7 @@ export default class MemoryStorage {
         if (ttl <= 0) {
             return false;
         }
-        return new Date().getTime() > savedAt + (ttl * 1000);
+        return Date.now() > (savedAt + ttl);
     }
 
     /**

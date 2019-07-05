@@ -3,6 +3,10 @@ export default class BlackHoleStorage {
     async store(key, value, options = {}) {
     }
 
+    async touch(key) {
+
+    }
+
     async get(key) {
         return null;
     }

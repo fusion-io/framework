@@ -13,7 +13,7 @@ export default class SessionServiceProvider extends ServiceProvider {
             const config     = container.make(Config);
             const koaSession = koaSessionFactory(
                 {
-                    ...config.get('http.session', {}),
+                    ...config.get('http.session.options'),
                     autoCommit: false
                 },
                 container.make(Kernel)

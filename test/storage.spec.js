@@ -11,6 +11,8 @@ const connection = knex({
     }
 });
 
+const wait = (milisecond) => new Promise(resolve => setTimeout(resolve, milisecond));
+
 const driverGenericTestCases = (driver) => {
     beforeEach(async () => {
         if (driver.flush) {
@@ -71,6 +73,35 @@ const driverTaggableTestCases = (driver) => {
     });
 };
 
+const driverExpirableTestCases = driver => {
+    it('will not get expired item', async () => {
+        // Set the ttl value at 10ms
+        await driver.store('foo', 'bar', {ttl: 10});
+
+        assert(await driver.get('foo'));
+
+        await wait(11);
+
+        assert.isNull(await driver.get('foo'));
+    });
+
+    it('can touch an item to update the expired time', async () => {
+
+        // Will expired in 100ms
+        await driver.store('foo', 'bar', {ttl: 100});
+
+        // But we touch it after 50ms
+        await wait(50);
+        await driver.touch('foo');
+
+        // In the next 100ms it still have the result
+        await wait(90);
+
+        assert(await driver.get('foo'));
+    });
+
+
+};
 
 describe('Storage tests', () => {
     describe('Drivers tests', () => {
@@ -79,6 +110,7 @@ describe('Storage tests', () => {
             const driver = new MemoryStorage();
             driverGenericTestCases(driver);
             driverTaggableTestCases(driver);
+            driverExpirableTestCases(driver);
         });
 
         describe('DatabaseStorage test cases', () => {
@@ -89,8 +121,11 @@ describe('Storage tests', () => {
                     table.string('key');
                     table.string('value');
                     table.string('tags');
+                    table.integer('ttl').nullable();
                     table.integer('expiredAt');
-                })
+                    table.integer('createdAt');
+                    table.integer('updatedAt');
+                });
             });
 
             after(async () => {
@@ -106,6 +141,7 @@ describe('Storage tests', () => {
 
             driverGenericTestCases(driver);
             driverTaggableTestCases(driver);
+            driverExpirableTestCases(driver);
         });
 
     });
