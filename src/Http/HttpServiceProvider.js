@@ -5,6 +5,7 @@ import HttpResolver from "./HttpResolver";
 import Router from "./Router";
 import Kernel from "./Kernel";
 import UrlManager from "./UrlManager";
+import ContextRedirect from "./ContextRedirect";
 
 /**
  * Provide the Http Kernel & Http Router  configuration & behaviors
@@ -64,6 +65,8 @@ export default class HttpServiceProvider extends ServiceProvider {
         const config    = this.container.make(Config);
 
         kernel.keys = config.get('keys', []);
+
+        kernel.use(ContextRedirect);
 
         // Apply global middlewares to the Kernel
         this.globalMiddlewares()

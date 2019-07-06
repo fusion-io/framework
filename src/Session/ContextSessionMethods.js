@@ -10,7 +10,8 @@ export default async (context, next) => {
     sessionManager.load(serializedPayload);
 
     context.session.set = (...parameters) => {
-        return sessionManager.set(...parameters);
+        sessionManager.set(...parameters);
+        return context;
     };
 
     context.session.get = (...parameters) => {
@@ -18,15 +19,24 @@ export default async (context, next) => {
     };
 
     context.session.unset = (...parameters) => {
-        return sessionManager.unset(...parameters);
+        sessionManager.unset(...parameters);
+        return context;
     };
 
     context.session.forget = () => {
-        return sessionManager.forget();
+        sessionManager.forget();
+        return context;
     };
 
     context.session.flash = (...parameters) => {
-        return sessionManager.flash(...parameters);
+        sessionManager.flash(...parameters);
+        return context;
+    };
+
+    context.with = (key, value) => {
+        context.session.flash(key, value);
+
+        return context;
     };
 
     await next();

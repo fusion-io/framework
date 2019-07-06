@@ -4,7 +4,7 @@ import ServiceProvider from "../utils/ServiceProvider";
 import StorageBridgeSessionStore from "./StorageBridgeSessionStore";
 import SessionStartMiddleware from "./SessionStartMiddleware";
 import Kernel from "../Http/Kernel";
-import proxySessionManagerMethods from "./proxySessionManagerMethods";
+import ContextSessionMethods from "./ContextSessionMethods";
 
 export default class SessionServiceProvider extends ServiceProvider {
 
@@ -20,7 +20,7 @@ export default class SessionServiceProvider extends ServiceProvider {
                     { ...config.get('http.session.options'), store: bridge },
                     container.make(Kernel)
                 ),
-                proxySessionManagerMethods
+                ContextSessionMethods
             ];
         });
     }
