@@ -15,8 +15,8 @@ export const job = (toPayload, fromPayload) => {
                 return fromPayload(payload);
             }
 
-            dispatch() {
-                return container.make(Queue).enqueue(this);
+            dispatch(onQueue = null) {
+                return container.make(Queue).enqueue(this, null, onQueue);
             }
         }
     }

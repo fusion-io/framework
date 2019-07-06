@@ -1,9 +1,13 @@
 export default class RunJob {
-    constructor(job) {
-        this.job = job;
+    constructor(logger) {
+        this.logger = logger;
     }
 
-    async execute() {
-        await this.job.execute();
+    compile(fn) {
+        return async (jobName, payload) => {
+            this.logger.info(`Executing job [${jobName}] with payload [${payload}]`);
+            await fn(jobName, payload);
+            this.logger.info(`Finished execution job [${jobName}] with payload [${payload}]`);
+        };
     }
 }

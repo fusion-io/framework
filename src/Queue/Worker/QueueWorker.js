@@ -1,14 +1,14 @@
 export default class QueueWorker {
-    constructor(registry) {
+    constructor(registry, behaviors) {
         this.registry  = registry;
-        this.behaviors = [ ];
+        this.behaviors = behaviors;
     }
 
     async work({jobName, payload}) {
         const workload = this.registry.get(jobName);
 
-        await workload(payload);
+        const compiledWorkload = this.behaviors.compile((jobName, payload) => workload(payload));
 
-        await new Promise(resolve => setTimeout(resolve, 500));
+        await compiledWorkload(jobName, payload);
     };
 }

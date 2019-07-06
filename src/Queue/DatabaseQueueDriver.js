@@ -29,8 +29,8 @@ export default class DatabaseQueueDriver {
     }
 
     pull(callback) {
-        this.connection.transaction(async trx => {
-            const job = await trx
+        (async connection => {
+            const job = await connection
                 .from(this.tableName)
                 .where({ pulledAt: null })
                 .orderBy('createdAt')
@@ -39,7 +39,7 @@ export default class DatabaseQueueDriver {
             ;
 
             if (job) {
-                await trx
+                await connection
                     .where({id: job.id})
                     .update({pulledAt: Date.now()})
                     .from(this.tableName)
@@ -47,18 +47,20 @@ export default class DatabaseQueueDriver {
 
                 try {
                     await callback(JSON.parse(job['payload']));
-                    await trx
+                    await connection
                         .where({id: job.id})
                         .update({executedAt: Date.now()})
                         .from(this.tableName)
                 } catch (e) {
-                    trx
+                    await connection
                         .where({id: job.id})
+                        .from(this.tableName)
                         .update({failedAt: Date.now()})
                     ;
                 }
             }
-        }).then(() => {
+        })(this.connection)
+        .then(() => {
             this.pull(callback);
         });
     }
