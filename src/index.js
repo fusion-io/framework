@@ -7,6 +7,7 @@ import HttpKernel from "./Http/Kernel";
 import HttpRouter from "./Http/Router";
 import HttpServiceProvider from "./Http/HttpServiceProvider";
 import SessionStartMiddleware from "./Session/SessionStartMiddleware";
+import AccessLogger from "./Logger/AccessLogger";
 
 export {
     // Utils package
@@ -21,5 +22,8 @@ export {
     HttpServiceProvider, HttpKernel, HttpRouter, get, post, put, patch, del, route, all, middleware,
 
     // Session Package
-    SessionStartMiddleware
+    SessionStartMiddleware,
+
+    //
+    AccessLogger
 }
