@@ -115,8 +115,8 @@ describe('Storage tests', () => {
 
         describe('DatabaseStorage test cases', () => {
             before(async () => {
-                await connection.schema.dropTableIfExists('storage');
-                await connection.schema.createTable('storage', table => {
+                await connection.schema.dropTableIfExists('fusion_storages');
+                await connection.schema.createTable('fusion_storages', table => {
                     table.increments();
                     table.string('key');
                     table.string('value');
@@ -129,11 +129,11 @@ describe('Storage tests', () => {
             });
 
             after(async () => {
-                await connection.schema.dropTable('storage');
+                await connection.schema.dropTable('fusion_storages');
             });
 
             beforeEach(async () => {
-                await connection.truncate('storage');
+                await connection.truncate('fusion_storages');
             });
 
 
