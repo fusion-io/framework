@@ -23,6 +23,10 @@ export default class SyncQueueDriver {
         }
     }
 
+    pull() {
+        throw new Error(`E_QUEUE: Using [${this.constructor.name}] does not required to execute the worker.`);
+    }
+
     static install() {
         container.make(QueueRegistry, Logger);
 

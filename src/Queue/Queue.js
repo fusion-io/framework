@@ -1,23 +1,38 @@
 import Manager from "../utils/Manager";
 import SyncQueueDriver from "./SyncQueueDriver";
 import lodash from "lodash";
+import DatabaseQueueDriver from "./DatabaseQueueDriver";
 
 export default class Queue extends Manager {
 
-    constructor(registry) {
+    constructor(registry, {defaultConnection, connections}) {
         super();
-        this.registry = registry;
+        this.registry           = registry;
+        this.defaultConnection  = defaultConnection;
+        this.connnectionConfig  = connections;
+
         this.drivers  = {
-            "sync": SyncQueueDriver
+            "sync": SyncQueueDriver,
+            "database": DatabaseQueueDriver
         }
     }
 
     getDefaultAdapterName() {
-        return "sync";
+        return this.defaultConnection;
     }
 
-    resolveDriver(adapterName) {
-        return "sync";
+    resolveDriver(connection) {
+        return this.configOf(connection)['driver'];
+    }
+
+    configOf(connection) {
+        const adapterConfig = this.connnectionConfig[connection];
+
+        if (!adapterConfig) {
+            throw new Error(`E_QUEUE: Queue connection [${connection}] is not configured.`);
+        }
+
+        return adapterConfig;
     }
 
     queue(queueName = null) {

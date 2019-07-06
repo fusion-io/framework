@@ -10,7 +10,7 @@ export default class DatabaseStorage {
      */
     constructor(connection) {
         this.connection = connection;
-        this.tableName  = 'storage';
+        this.tableName  = 'fusion_storages';
         this.ttl        = 1000 * 60 * 60 * 24;
     }
 

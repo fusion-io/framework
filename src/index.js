@@ -11,6 +11,7 @@ import AccessLogger from "./Logger/AccessLogger";
 import ServeStatic from "./Http/ServeStatic";
 import QueueRegistry from "./Queue/QueueRegistry";
 import {job} from "./Queue/decorators";
+import QueueWorker from "./Queue/Worker/QueueWorker";
 
 export {
     // Utils package
@@ -31,5 +32,5 @@ export {
     AccessLogger,
 
     // Queue Package
-    QueueRegistry, job
+    QueueRegistry, QueueWorker, job
 }
