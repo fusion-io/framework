@@ -6,8 +6,9 @@ import { get, post, put, patch, del, route, all, middleware } from "./Http/HttpR
 import HttpKernel from "./Http/Kernel";
 import HttpRouter from "./Http/Router";
 import HttpServiceProvider from "./Http/HttpServiceProvider";
-import SessionStartMiddleware from "./Session/SessionStartMiddleware";
+import StartSession from "./Session/StartSession";
 import AccessLogger from "./Logger/AccessLogger";
+import ServeStatic from "./Http/ServeStatic";
 
 export {
     // Utils package
@@ -19,11 +20,11 @@ export {
     container, bind, singleton, bindInversion, singletonInversion,
 
     // Http Package
-    HttpServiceProvider, HttpKernel, HttpRouter, get, post, put, patch, del, route, all, middleware,
+    HttpServiceProvider, HttpKernel, HttpRouter, ServeStatic, get, post, put, patch, del, route, all, middleware,
 
     // Session Package
-    SessionStartMiddleware,
+    StartSession,
 
-    //
+    // Logger Package
     AccessLogger
 }
