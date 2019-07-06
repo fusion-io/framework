@@ -10,7 +10,7 @@ export default class AccessLogger {
 
     async handle(context, next) {
         await next();
-        const status = context.statusCode || 200;
+        const status = context.response.status || 200;
         const message = `${status} - ${context.request.method.toUpperCase()} ${context.request.url}`;
 
         if (status < 300) {
