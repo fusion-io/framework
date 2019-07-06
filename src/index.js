@@ -9,6 +9,8 @@ import HttpServiceProvider from "./Http/HttpServiceProvider";
 import StartSession from "./Session/StartSession";
 import AccessLogger from "./Logger/AccessLogger";
 import ServeStatic from "./Http/ServeStatic";
+import QueueRegistry from "./Queue/QueueRegistry";
+import {job} from "./Queue/decorators";
 
 export {
     // Utils package
@@ -26,5 +28,8 @@ export {
     StartSession,
 
     // Logger Package
-    AccessLogger
+    AccessLogger,
+
+    // Queue Package
+    QueueRegistry, job
 }
