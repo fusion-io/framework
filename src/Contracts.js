@@ -18,8 +18,6 @@ export const Mail       = "Fusion.Mail";
 
 export const Queue      = "Fusion.Queue";
 
-export const Serializer = "Fusion.Serializer";
-
 export const Storage    = "Fusion.Cache";
 
 export const Validator  = "Fusion.Validator";

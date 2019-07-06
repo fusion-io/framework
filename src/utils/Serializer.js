@@ -1,4 +1,4 @@
-class Serializer {
+export default class Serializer {
 
     /**
      *
@@ -31,11 +31,11 @@ class Serializer {
      * @param data
      * @return {*}
      */
-    serialize(strategyName, data) {
+    serialize(strategyName, ...data) {
 
         const strategy = this.getStrategy(strategyName);
 
-        return strategy.serializeFunction(data);
+        return strategy.serializeFunction(...data);
     }
 
     /**
@@ -44,11 +44,11 @@ class Serializer {
      * @param serialized
      * @return {*}
      */
-    deserialize(strategyName, serialized) {
+    deserialize(strategyName, ...serialized) {
 
         const strategy = this.getStrategy(strategyName);
 
-        return strategy.deserializeFunction(serialized);
+        return strategy.deserializeFunction(...serialized);
     }
 
     /**
@@ -57,6 +57,23 @@ class Serializer {
      * @return {*}
      */
     getStrategy(strategyName) {
+        const strategy = this.strategies[strategyName];
+
+        if (!strategy) {
+            return {
+                serializeFunction   : v => v,
+                deserializeFunction : v => v
+            }
+        }
+
+        return strategy;
+    }
+
+    /**
+     *
+     * @param strategyName
+     */
+    getStrategyOrThrow(strategyName) {
         const strategy = this.strategies[strategyName];
 
         if (!strategy) {
