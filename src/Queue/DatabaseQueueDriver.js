@@ -67,8 +67,8 @@ export default class DatabaseQueueDriver {
 
     static install(adapter, manager) {
         const dbm = container.make(Database);
-        const {tableName, databaseConnection} = manager.configOf(adapter);
+        const {tableName, connection} = manager.configOf(adapter);
 
-        return new DatabaseQueueDriver(dbm.connection(databaseConnection)).setTableName(tableName);
+        return new DatabaseQueueDriver(dbm.connection(connection)).setTableName(tableName);
     }
 }

@@ -5,11 +5,11 @@ import DatabaseQueueDriver from "./DatabaseQueueDriver";
 
 export default class Queue extends Manager {
 
-    constructor(registry, {defaultConnection, connections}) {
+    constructor(registry, {defaultConnection, queues}) {
         super();
         this.registry           = registry;
         this.defaultConnection  = defaultConnection;
-        this.connnectionConfig  = connections;
+        this.connnectionConfig  = queues;
 
         this.drivers  = {
             "sync": SyncQueueDriver,
