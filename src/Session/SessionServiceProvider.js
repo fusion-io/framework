@@ -1,23 +1,38 @@
 import koaSessionFactory from "koa-session";
-import {Config, Storage} from "../Contracts";
+import {Config} from "../Contracts";
 import ServiceProvider from "../utils/ServiceProvider";
 import StorageBridgeSessionStore from "./StorageBridgeSessionStore";
 import StartSession from "./StartSession";
 import Kernel from "../Http/Kernel";
 import ContextSessionMethods from "./ContextSessionMethods";
+import SessionStorageManager from "./SessionStorageManager";
+import Serializer from "../utils/Serializer";
 
 export default class SessionServiceProvider extends ServiceProvider {
 
     register() {
-        this.container.singleton(StartSession, (container) => {
+
+        this.container.singleton(SessionStorageManager, container => {
+            const config = container.make(Config);
+            const configForManager = {
+                defaultAdapter: 'sessionStoreAdapter',
+                adapters: {
+                    sessionStoreAdapter: config.get('session')
+                }
+            };
+
+            return new SessionStorageManager(configForManager, new Serializer());
+        });
+
+        this.container.singleton(StartSession, container => {
 
             const config        = container.make(Config);
-            const storeManager  = container.make(Storage);
+            const storeManager  = container.make(SessionStorageManager);
             const bridge        = new StorageBridgeSessionStore(storeManager);
 
             return [
                 koaSessionFactory(
-                    { ...config.get('http.session.options'), store: bridge },
+                    { ...config.get('session.options'), store: bridge },
                     container.make(Kernel)
                 ),
                 ContextSessionMethods
