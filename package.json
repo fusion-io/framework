@@ -14,10 +14,10 @@
   "author": "rikky <son.levuthai@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@babel/cli": "^7.4.4",
-    "@babel/core": "^7.4.5",
+    "@babel/cli": "^7.5.0",
+    "@babel/core": "^7.5.0",
     "@babel/plugin-proposal-decorators": "^7.4.4",
-    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-env": "^7.5.0",
     "@babel/register": "^7.4.4",
     "chai": "^4.2.0",
     "concurrently": "^4.1.1",
@@ -30,9 +30,9 @@
     "sqlite3": "^4.0.9"
   },
   "dependencies": {
-    "@fusion.io/container": "^2.0.10",
+    "@fusion.io/container": "^2.1.0",
     "bcrypt": "^3.0.6",
-    "knex": "^0.18.2",
+    "knex": "^0.18.3",
     "koa": "^2.7.0",
     "koa-router": "^7.4.0",
     "koa-session": "^5.12.0",

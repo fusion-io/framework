@@ -1,7 +1,7 @@
 import NestedHash from "./utils/NestedHash";
 import ServiceProvider from "./utils/ServiceProvider";
 import Manager from "./utils/Manager";
-import {container, bind, singleton, bindInversion, singletonInversion} from "@fusion.io/container";
+import {container, bind, singleton, bindInversion, singletonInversion, inject} from "@fusion.io/container";
 import { get, post, put, patch, del, route, all, middleware } from "./Http/HttpResolver";
 import HttpKernel from "./Http/Kernel";
 import HttpRouter from "./Http/Router";
@@ -20,7 +20,7 @@ export {
     Manager,
 
     // Container package
-    container, bind, singleton, bindInversion, singletonInversion,
+    container, bind, singleton, bindInversion, singletonInversion, inject,
 
     // Http Package
     HttpServiceProvider, HttpKernel, HttpRouter, ServeStatic, get, post, put, patch, del, route, all, middleware,
