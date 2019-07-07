@@ -15,6 +15,8 @@ import QueueWorker from "./Queue/Worker/QueueWorker";
 import RenderView from "./View/RenderView";
 import RenderNunjuckView from "./View/NunjucksEngine/RenderNunjuckView";
 import {renderable} from "./View/decorator";
+import Form from "./Form/Form";
+import {form} from "./Form/decorator";
 
 export {
     // Utils package
@@ -38,5 +40,8 @@ export {
     QueueRegistry, QueueWorker, job,
 
     // View Package
-    RenderView, RenderNunjuckView, renderable
+    RenderView, RenderNunjuckView, renderable,
+
+    // Form Package
+    Form, form
 }
