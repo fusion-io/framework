@@ -10,7 +10,13 @@ export default class ViewServiceProvider extends ServiceProvider {
         this.container.value(View, new ViewFactory());
         this.container.singleton(ViewEngineNunjucks, (container) => {
             const config = container.make(Config);
-            return new ViewEngineNunjucks(new NunjucksEnv(new FileSystemLoader(config.get('view.directory'))))
+            return new ViewEngineNunjucks(
+                new NunjucksEnv(
+                    new FileSystemLoader(config.get('view.directory'),
+                    config.get('view.options')
+                    )
+                )
+            )
         });
     }
 
