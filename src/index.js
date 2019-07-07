@@ -14,6 +14,7 @@ import {job} from "./Queue/decorators";
 import QueueWorker from "./Queue/Worker/QueueWorker";
 import RenderView from "./View/RenderView";
 import RenderNunjuckView from "./View/NunjucksEngine/RenderNunjuckView";
+import {renderable} from "./View/decorator";
 
 export {
     // Utils package
@@ -37,5 +38,5 @@ export {
     QueueRegistry, QueueWorker, job,
 
     // View Package
-    RenderView, RenderNunjuckView
+    RenderView, RenderNunjuckView, renderable
 }

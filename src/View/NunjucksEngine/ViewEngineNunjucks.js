@@ -17,10 +17,18 @@ export default class ViewEngineNunjucks {
      * @param {FirstStepView} firstStepView
      */
     render(firstStepView) {
-        return this.nunjucks.render(
-            this.resolveSecondStepViewName(firstStepView.getView()),
-            firstStepView.getData()
-        );
+        return new Promise((resolve, reject) => {
+            this.nunjucks.render(
+                this.resolveSecondStepViewName(firstStepView.getView()),
+                firstStepView.getData(),
+                (error, result) => {
+                    if (error) {
+                        return reject(error);
+                    }
+                    return resolve(result);
+                }
+            )
+        });
     }
 
     resolveSecondStepViewName(firstStepViewName) {

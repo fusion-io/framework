@@ -13,4 +13,16 @@ export default class ViewServiceProvider extends ServiceProvider {
             return new ViewEngineNunjucks(new NunjucksEnv(new FileSystemLoader(config.get('view.directory'))))
         });
     }
+
+    boot() {
+        const engine = this.container.make(ViewEngineNunjucks);
+
+        engine.getEnv().addFilter('render', function(target, callback) {
+            target.render(true)
+                .then(firstStepView => engine.render(firstStepView))
+                .then(embedded => callback(null, engine.getEnv().getFilter('safe')(embedded)))
+                .catch(error => callback(error))
+            ;
+        }, true);
+    }
 }

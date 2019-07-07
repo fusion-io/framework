@@ -12,7 +12,7 @@ export default class RenderNunjuckView {
         await next();
         if (context.fusionView) {
             context.type = 'html';
-            context.body = this.engine.render(context.fusionView);
+            context.body = await this.engine.render(context.fusionView);
         }
     }
 }
