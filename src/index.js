@@ -12,6 +12,8 @@ import ServeStatic from "./Http/ServeStatic";
 import QueueRegistry from "./Queue/QueueRegistry";
 import {job} from "./Queue/decorators";
 import QueueWorker from "./Queue/Worker/QueueWorker";
+import RenderView from "./View/RenderView";
+import RenderNunjuckView from "./View/NunjucksEngine/RenderNunjuckView";
 
 export {
     // Utils package
@@ -32,5 +34,8 @@ export {
     AccessLogger,
 
     // Queue Package
-    QueueRegistry, QueueWorker, job
+    QueueRegistry, QueueWorker, job,
+
+    // View Package
+    RenderView, RenderNunjuckView
 }
