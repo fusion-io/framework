@@ -24,6 +24,8 @@ export const Validator  = "Fusion.Validator";
 
 export const View       = "Fusion.View";
 
+export const I18N       = "Fusion.I18N";
+
 //
 
 export const Url        = "Fusion.Url";
