@@ -10,7 +10,9 @@ export default class RenderNunjuckView {
 
     async handle(context, next) {
         await next();
-        context.type = 'html';
-        context.body = this.engine.render(context.fusionView);
+        if (context.fusionView) {
+            context.type = 'html';
+            context.body = this.engine.render(context.fusionView);
+        }
     }
 }
