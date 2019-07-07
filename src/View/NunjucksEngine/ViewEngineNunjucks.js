@@ -6,6 +6,14 @@ export default class ViewEngineNunjucks {
 
     /**
      *
+     * @return {nunjucks.Environment}
+     */
+    getEnv() {
+        return this.nunjucks;
+    }
+
+    /**
+     *
      * @param {FirstStepView} firstStepView
      */
     render(firstStepView) {
