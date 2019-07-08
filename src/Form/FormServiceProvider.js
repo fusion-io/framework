@@ -11,10 +11,55 @@ import lodash from "lodash";
  * @type {{}}
  */
 const ChrisOharaValidators = {
-    contains: 'contains',
-    isAfter: 'date.after'
-
-    // TODO
+    contains : 'contains',
+    equals   : 'equals',
+    isAfter  : 'date.after',
+    isAlpha  : 'alpha',
+    isAlphanumeric: 'alphaNumeric',
+    isAscii: 'ascii',
+    isBase32: 'base32',
+    isBase64: 'base64',
+    isBefore: 'data.before',
+    isBoolean: 'boolean',
+    isCreditCard: 'creditcard',
+    isCurrency: 'currency',
+    isDataURI: 'dataURI',
+    isMagnetURI: 'magnetURI',
+    isDecimal: 'decimal',
+    isDivisibleBy: 'divisible',
+    isEmail: 'email',
+    isEmpty: 'empty',
+    isFQDN: 'domain',
+    isFloat: 'float',
+    isFullWidth: 'fullwidth',
+    isHalfWidth: 'halfwidth',
+    isHash: 'hash',
+    isHexColor: 'hexcolor',
+    isHexadecimal: 'hexa',
+    isIdentityCard: 'idcard',
+    isIP: 'ip',
+    isIPRange: 'ipv4range',
+    isISSN: 'issn',
+    isISIN: 'isin',
+    isISO8601: 'date.iso8601',
+    isRFC3339: 'date.rfc3339',
+    isInt: 'int',
+    isJSON: 'json',
+    isJWT: 'jwt',
+    isLatLong: 'latlong',
+    isLength: 'legnth',
+    isLowercase: 'lowercase',
+    isMACAddress: 'macAddress',
+    isMD5: 'md5',
+    isMimeType: 'mime',
+    isMobilePhone: 'phone',
+    isMongoId: 'mongoID',
+    isMultibyte: 'hasMultibyte',
+    isNumeric: 'numeric',
+    isPostalCode: 'postcode',
+    isURL: 'url',
+    isUppercase: 'uppercase',
+    matches: 'matches'
 };
 
 export default class FormServiceProvider extends ServiceProvider {
@@ -29,5 +74,7 @@ export default class FormServiceProvider extends ServiceProvider {
         lodash.forIn(ChrisOharaValidators, (validatorName, originalName) => {
             registry.register(validatorName, (value, ...args) => validator[originalName](value + '', ...args));
         });
+
+        registry.register('required', value => value !== undefined);
     }
 }
