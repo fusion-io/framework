@@ -5,6 +5,11 @@
  */
 export default class SessionManager extends Map {
 
+    constructor(serializer) {
+        super();
+        this.serializer = serializer;
+    }
+
     static storable(payload) {
         if (payload === 0) {
             return true;
@@ -22,7 +27,8 @@ export default class SessionManager extends Map {
             const [key, value]          = entry;
             const { metadata, payload } = value;
 
-            this.set(key, payload, v => v, metadata);
+            // Keep the entries values by specify the serializer
+            this.set(key, payload, metadata, v => v);
         });
 
         return this;
@@ -33,13 +39,17 @@ export default class SessionManager extends Map {
      *
      * @param {string} key
      * @param {*} value
-     * @param {Function} serializeFunction
      * @param metadata
+     * @param {Function} serializeFunction
      * @return {SessionManager}
      */
-    set(key, value, serializeFunction = (v) => v, metadata = {}) {
+    set(key, value, metadata = {}, serializeFunction = null) {
         if ('string' !== typeof key) {
             throw new Error("E_SESSION: Key of the session must be a string");
+        }
+
+        if (!serializeFunction) {
+            serializeFunction = v => this.serializer.serialize(key, v);
         }
 
         const payload = serializeFunction(value);
@@ -74,7 +84,7 @@ export default class SessionManager extends Map {
      * @param {*} defaultIfNotExisted
      * @param {Function} deserializeFunction
      */
-    get(key, defaultIfNotExisted = null, deserializeFunction = (v) => v) {
+    get(key, defaultIfNotExisted = null, deserializeFunction = null) {
         if (!super.has(key)) {
             return defaultIfNotExisted;
         }
@@ -85,6 +95,10 @@ export default class SessionManager extends Map {
             this.delete(key);
         }
 
+        if (!deserializeFunction) {
+            deserializeFunction = v => this.serializer.deserialize(key, v);
+        }
+
         return deserializeFunction(payload);
     }
 
@@ -92,11 +106,12 @@ export default class SessionManager extends Map {
      *
      * @param key
      * @param value
-     * @param serializeFunction
      * @param metadata
+     * @param serializeFunction
+     *
      */
-    flash(key, value, serializeFunction = (v) => v, metadata = {}) {
-        return this.set(key, value, serializeFunction, {...metadata, flash: true});
+    flash(key, value, metadata = {}, serializeFunction = null) {
+        return this.set(key, value, {...metadata, flash: true}, serializeFunction);
     }
 
     /**

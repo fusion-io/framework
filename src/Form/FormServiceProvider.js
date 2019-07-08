@@ -3,6 +3,8 @@ import {Validator} from "../Contracts";
 import ValidatorRegistry from "./ValidatorRegistry";
 import validator from "validator";
 import lodash from "lodash";
+import SessionSerializer from "../Session/SessionSerializer";
+import ValidationResult from "./ValidationResult";
 
 /**
  * It's a variable, but I will use Capital since I always respect ChrisOhara
@@ -76,5 +78,13 @@ export default class FormServiceProvider extends ServiceProvider {
         });
 
         registry.register('required', value => value !== undefined);
+
+        const sessionSerializer = this.container.make(SessionSerializer);
+
+        sessionSerializer.register(
+            'errors',
+            validationResult => validationResult.serialize(),
+            raw => new ValidationResult(raw)
+        );
     }
 }

@@ -7,6 +7,7 @@ import Kernel from "../Http/Kernel";
 import ContextSessionMethods from "./ContextSessionMethods";
 import SessionStorageManager from "./SessionStorageManager";
 import Serializer from "../utils/Serializer";
+import SessionSerializer from "./SessionSerializer";
 
 export default class SessionServiceProvider extends ServiceProvider {
 
@@ -38,5 +39,7 @@ export default class SessionServiceProvider extends ServiceProvider {
                 ContextSessionMethods
             ];
         });
+
+        this.container.value(SessionSerializer, new SessionSerializer());
     }
 }

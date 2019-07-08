@@ -1,11 +1,13 @@
 import SessionManager from "./SessionManager";
+import SessionSerializer from "./SessionSerializer";
+import {container} from "@fusion.io/container";
 
 export default async (context, next) => {
 
     // Extract the session payload
 
     let serializedPayload = context.session['fusionSession'] || [];
-    let sessionManager    = new SessionManager();
+    let sessionManager    = new SessionManager(container.make(SessionSerializer));
 
     sessionManager.load(serializedPayload);
 
@@ -38,6 +40,14 @@ export default async (context, next) => {
 
         return context;
     };
+
+    context.withError = value => {
+        context.session.flash('errors', value);
+
+        return context;
+    };
+
+    context.errors = () => context.session.get('errors');
 
     await next();
 

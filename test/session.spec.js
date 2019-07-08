@@ -1,12 +1,14 @@
 import {assert} from 'chai';
 import SessionManager from "../src/Session/SessionManager";
+import SessionSerializer from "../src/Session/SessionSerializer";
+import Serializer from "../src/utils/Serializer";
 
 describe('SessionManager tests', () => {
 
     let session;
 
     beforeEach(() => {
-        session = new SessionManager();
+        session = new SessionManager(new SessionSerializer());
     });
 
     it('can load the saved session data', () => {
@@ -32,7 +34,7 @@ describe('SessionManager tests', () => {
 
     it('can set the session data', () => {
         session.set('key1', 'value1');
-        session.set('key2', 'value', value => value + 2);
+        session.set('key2', 'value', {}, value => value + 2);
 
         assert.equal(session.get('key1'), 'value1');
         assert.equal(session.get('key2'), 'value2');
@@ -94,7 +96,7 @@ describe('SessionManager tests', () => {
 
         const serialized = session.serialize();
 
-        let otherSession = new SessionManager();
+        let otherSession = new SessionManager(new Serializer());
 
         otherSession.load(serialized);
 
