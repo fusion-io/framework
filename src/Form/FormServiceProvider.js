@@ -19,7 +19,7 @@ const ChrisOharaValidators = {
     isAscii: 'ascii',
     isBase32: 'base32',
     isBase64: 'base64',
-    isBefore: 'data.before',
+    isBefore: 'date.before',
     isBoolean: 'boolean',
     isCreditCard: 'creditcard',
     isCurrency: 'currency',
