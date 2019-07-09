@@ -14,7 +14,7 @@ export const Hasher     = "Fusion.Hasher";
 
 export const Logger     = "Fusion.Logger";
 
-export const Mail       = "Fusion.Mail";
+export const Mailer     = "Fusion.Mail";
 
 export const Queue      = "Fusion.QueueManager";
 

@@ -20,6 +20,7 @@ import HalTemplate from "./View/HalEngine/HalTemplate";
 import {renderable, hal} from "./View/decorator";
 import Form from "./Form/Form";
 import {form} from "./Form/decorator";
+import MailerServiceProvider from "./Mail/MailerServiceProvider"
 
 export {
     // Utils package
@@ -46,5 +47,7 @@ export {
     RenderView, RenderNunjuckView, RenderHalView, HalTemplate, renderable, hal,
 
     // Form Package
-    Form, form
+    Form, form,
+
+    MailerServiceProvider
 }
