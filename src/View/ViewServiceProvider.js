@@ -3,6 +3,7 @@ import {Config, View} from "../Contracts";
 import ViewFactory from "./ViewFactory";
 import ViewEngineNunjucks from "./NunjucksEngine/ViewEngineNunjucks";
 import {FileSystemLoader, Environment as NunjucksEnv} from "nunjucks";
+import HalEngine from "./HalEngine/HalEngine";
 
 export default class ViewServiceProvider extends ServiceProvider {
 
@@ -18,6 +19,8 @@ export default class ViewServiceProvider extends ServiceProvider {
                 )
             )
         });
+
+        this.container.value(HalEngine, new HalEngine());
     }
 
     boot() {

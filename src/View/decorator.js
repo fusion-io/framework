@@ -22,3 +22,13 @@ export const renderable = (view, extraData = {}) => {
         }
     }
 };
+
+
+export const hal = selfLink => Target => {
+    return class extends Target {
+
+        static generateSelfLink(data) {
+            return selfLink(data);
+        }
+    }
+};

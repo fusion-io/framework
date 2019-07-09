@@ -49,7 +49,7 @@ const ChrisOharaValidators = {
     isJSON: 'json',
     isJWT: 'jwt',
     isLatLong: 'latlong',
-    isLength: 'legnth',
+    isLength: 'length',
     isLowercase: 'lowercase',
     isMACAddress: 'macAddress',
     isMD5: 'md5',
