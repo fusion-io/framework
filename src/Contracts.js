@@ -1,9 +1,3 @@
-export const Auth       = "Fusion.Auth";
-
-export const Broadcast  = "Fusion.Broadcast";
-
-export const Channel    = "Fusion.Channel";
-
 export const Config     = "Fusion.Config";
 
 export const Database   = "Fusion.Database";
