@@ -8,8 +8,6 @@ export const Hasher     = "Fusion.Hasher";
 
 export const Logger     = "Fusion.Logger";
 
-export const Mailer     = "Fusion.Mail";
-
 export const Queue      = "Fusion.QueueManager";
 
 export const Storage    = "Fusion.Cache";
