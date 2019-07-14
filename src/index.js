@@ -22,6 +22,7 @@ import {renderable, hal} from "./View/decorator";
 import Form from "./Form/Form";
 import {form} from "./Form/decorator";
 import ViewEngineNunjucks from "./View/NunjucksEngine/ViewEngineNunjucks";
+import * as Console from "./Console";
 
 export {
     // Utils package
@@ -48,5 +49,8 @@ export {
     ViewEngineNunjucks, RenderView, RenderNunjuckView, RenderHalView, HalTemplate, renderable, hal,
 
     // Form Package
-    Form, form
+    Form, form,
+
+    // Console
+    Console
 }
