@@ -1,6 +1,7 @@
 import {Database} from "../../../Contracts";
 import MigrationStateProvider from "../../../Migration/MigrationStateProvider";
 import MigrationsProvider from "../../../Migration/MigrationsProvider";
+import chalk from "chalk";
 
 export const command = "down";
 export const desc    = "Rollback migrations";
