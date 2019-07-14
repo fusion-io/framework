@@ -33,6 +33,7 @@
   "dependencies": {
     "@fusion.io/container": "^2.1.0",
     "bcrypt": "^3.0.6",
+    "chalk": "^2.4.2",
     "cli-table3": "^0.5.1",
     "glob": "^7.1.4",
     "i18next": "^17.0.6",

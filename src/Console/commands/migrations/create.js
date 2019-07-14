@@ -2,6 +2,7 @@ import fs from "fs";
 import moment from "moment";
 import lodash from "lodash";
 import ViewEngineNunjucks from "../../../View/NunjucksEngine/ViewEngineNunjucks";
+import chalk from "chalk";
 
 export const command = "create <migration>";
 export const desc    = "Create a database migration";
@@ -52,4 +53,5 @@ export const handler = ({rc, migration, n, alter, container}) => {
     const migrationCode  = viewEngine.getEnv().renderString(templateString, {tableName, className});
 
     fs.writeFileSync(rc.migrations.directory + "/" + fileName, migrationCode);
+    chalk.cyan(fileName);
 };

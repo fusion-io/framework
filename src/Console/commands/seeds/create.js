@@ -1,5 +1,6 @@
 import ViewEngineNunjucks from "../../../View/NunjucksEngine/ViewEngineNunjucks";
 import fs from "fs";
+import chalk from "chalk";
 
 export const command     = "create <seeder>";
 export const desc        = "Create a database seeder";
@@ -14,6 +15,8 @@ export const handler     = ({container, seeder, rc}) => {
     const viewEngine     = container.make(ViewEngineNunjucks).getEnv();
     const className      = seeder + "Seeder";
     const seederCode     = viewEngine.renderString(templateString, {className});
+    const fileName       = rc.seeders.directory + '/' + className + '.seeder.js';
 
-    fs.writeFileSync(rc.seeders.directory + '/' + className + '.seeder.js', seederCode);
+    fs.writeFileSync(fileName, seederCode);
+    chalk.cyan(fileName);
 };

@@ -1,8 +1,8 @@
-
 import fs     from "fs";
 import moment from "moment";
 import lodash from "lodash";
 import ViewEngineNunjucks from "../../../View/NunjucksEngine/ViewEngineNunjucks";
+import chalk  from "chalk";
 
 export const command     = "sessions [table]";
 export const desc        = "Create a migration for making sessions table";
@@ -25,4 +25,5 @@ export const handler = ({rc, table, container}) => {
     const migrationCode  = viewEngine.getEnv().renderString(templateString, {tableName: table, className});
 
     fs.writeFileSync(rc.migrations.directory + "/" + fileName, migrationCode);
+    chalk.cyan(fileName);
 };
