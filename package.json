@@ -12,6 +12,7 @@
     "test": "mocha --exit --require=@babel/register"
   },
   "author": "rikky <son.levuthai@gmail.com>",
+  "repository": "https://github.com/fusion-io/framework",
   "license": "MIT",
   "devDependencies": {
     "@babel/cli": "^7.5.0",
