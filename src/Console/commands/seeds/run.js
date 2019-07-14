@@ -15,7 +15,7 @@ export const handler = async ({container, seeder, rc}) => {
         process.cwd() + '/' + rc.seeders.directory + '/' + seeder + 'Seeder.seeder.js'
     ).default;
 
-    console.log(chalk.gray(`Seeding ${chalk.cyan(Seeder)}`));
+    console.log(chalk.gray(`Seeding ${chalk.cyan(seeder)}`));
 
     await new Seeder().seed();
 
