@@ -18,5 +18,5 @@ export const handler     = ({container, seeder, rc}) => {
     const fileName       = rc.seeders.directory + '/' + className + '.seeder.js';
 
     fs.writeFileSync(fileName, seederCode);
-    chalk.cyan(fileName);
+    console.log(chalk.cyan(fileName));;
 };

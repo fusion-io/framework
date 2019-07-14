@@ -1,3 +1,5 @@
+import chalk from "chalk";
+
 export const command     = "run <seeder>";
 export const desc        = "Run a seeder";
 export const builder     = yargs => {
@@ -13,7 +15,11 @@ export const handler = async ({container, seeder, rc}) => {
         process.cwd() + '/' + rc.seeders.directory + '/' + seeder + 'Seeder.seeder.js'
     ).default;
 
+    chalk.gray(`Seeding ${chalk.cyan(Seeder)}`);
+
     await new Seeder().seed();
+
+    chalk.green("Done");
 
     process.exit(0);
 };

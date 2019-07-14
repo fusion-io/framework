@@ -25,5 +25,5 @@ export const handler = ({rc, table, container}) => {
     const migrationCode  = viewEngine.getEnv().renderString(templateString, {tableName: table, className});
 
     fs.writeFileSync(rc.migrations.directory + "/" + fileName, migrationCode);
-    chalk.cyan(fileName);
+    console.log(chalk.cyan(fileName));
 };
