@@ -8,6 +8,7 @@ import HttpRouter from "./Http/Router";
 import HttpServiceProvider from "./Http/HttpServiceProvider";
 import StartSession from "./Session/StartSession";
 import SessionSerializer from "./Session/SessionSerializer";
+import SessionStorageManager from "./Session/SessionStorageManager";
 import AccessLogger from "./Logger/AccessLogger";
 import ServeStatic from "./Http/ServeStatic";
 import QueueRegistry from "./Queue/QueueRegistry";
@@ -35,7 +36,7 @@ export {
     HttpServiceProvider, HttpKernel, HttpRouter, ServeStatic, get, post, put, patch, del, route, all, middleware,
 
     // Session Package
-    StartSession, SessionSerializer,
+    StartSession, SessionSerializer, SessionStorageManager,
 
     // Logger Package
     AccessLogger,
