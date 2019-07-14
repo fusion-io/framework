@@ -20,7 +20,7 @@ import HalTemplate from "./View/HalEngine/HalTemplate";
 import {renderable, hal} from "./View/decorator";
 import Form from "./Form/Form";
 import {form} from "./Form/decorator";
-import MailerServiceProvider from "./Mail/MailerServiceProvider"
+import ViewEngineNunjucks from "./View/NunjucksEngine/ViewEngineNunjucks";
 
 export {
     // Utils package
@@ -44,10 +44,8 @@ export {
     QueueRegistry, QueueWorker, job,
 
     // View Package
-    RenderView, RenderNunjuckView, RenderHalView, HalTemplate, renderable, hal,
+    ViewEngineNunjucks, RenderView, RenderNunjuckView, RenderHalView, HalTemplate, renderable, hal,
 
     // Form Package
-    Form, form,
-
-    MailerServiceProvider
+    Form, form
 }
