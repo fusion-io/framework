@@ -30,7 +30,7 @@ const print = (set) => {
         table.push([
             statusIcon,
             execution ? chalk.gray(name) : name,
-            execution ? chalk.gray(new Date(execution.runAt).toISOString()): ''
+            execution ? chalk.gray(new Date(parseInt(execution.runAt)).toISOString()): ''
         ]);
     });
 
