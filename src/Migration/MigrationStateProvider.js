@@ -32,7 +32,7 @@ export default class MigrationStateProvider {
     purge(migration) {
         return this.connection
             .from(this.table)
-            .whereIn('id', migration.id).del()
+            .where('id', migration.id).del()
         ;
     }
 };
