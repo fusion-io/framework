@@ -8,7 +8,7 @@ export default class MigrationStateProvider {
             await this.connection.schema.createTable(this.table, (table) => {
                 table.increments();
                 table.string('migration').notNullable();
-                table.integer('runAt');
+                table.bigInteger('runAt');
             });
         }
     }
