@@ -17,7 +17,9 @@ export const handler = async ({container, seeder, rc}) => {
 
     console.log(chalk.gray(`Seeding ${chalk.cyan(seeder)}`));
 
-    await new Seeder().seed();
+    const seederInstance = new Seeder();
+
+    await seederInstance.seed();
 
     console.log(chalk.green("Done"));
 
