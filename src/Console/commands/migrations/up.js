@@ -50,19 +50,13 @@ export const handler  = async ({container, connection, rc, number, to}) => {
         process.exit(0);
     }
 
-    let provisioned = [];
-
-    // Start the database transaction
-
     if (number) {
-        provisioned = await set.up(number, dbc);
+        await set.up(number, dbc, stateProvider);
     } else if (to) {
-        provisioned = await set.upTo(to, dbc);
+        await set.upTo(to, dbc, stateProvider);
     } else {
-        provisioned = await set.latest(dbc);
+        await set.latest(dbc, stateProvider);
     }
-
-    await stateProvider.sync(provisioned);
 
     process.exit(0);
 };

@@ -23,7 +23,7 @@ export default class MigrationSet {
         return this.executeds.find(executed => executed.migration === name);
     }
 
-    async up(step, connection) {
+    async up(step, connection, state) {
         let notRunYet = this.notMigrated();
         let executing = [];
 
@@ -40,6 +40,10 @@ export default class MigrationSet {
 
             await instance.up(connection.schema);
 
+            const delta = {migration: name, runAt: Date.now()};
+
+            await state.sync(delta);
+
             this.event.emit(MIGRATED, name, 'up');
 
             executing.push({migration: name, runAt: Date.now()})
@@ -48,20 +52,20 @@ export default class MigrationSet {
         return executing;
     }
 
-    upTo(version, connection) {
+    upTo(version, connection, state) {
         let notRunYet   = this.notMigrated();
         let targetIndex = notRunYet.findIndex(migration => migration.name === version);
 
-        return this.up(targetIndex + 1, connection);
+        return this.up(targetIndex + 1, connection, state);
     }
 
-    latest(connection) {
+    latest(connection, state) {
         let notRunYet   = this.notMigrated();
 
-        return this.up(notRunYet.length, connection);
+        return this.up(notRunYet.length, connection, state);
     }
 
-    async down(step, connection) {
+    async down(step, connection, state) {
         let alreadyRun = this.hasBeenMigrated().map(v => v).reverse();
         let executing   = [];
 
@@ -78,6 +82,10 @@ export default class MigrationSet {
 
             await instance.down(connection.schema);
 
+            const delta = this.getExecution(name);
+
+            await state.purge(delta);
+
             this.event.emit(MIGRATED, name, 'down');
 
             executing.push(this.getExecution(name));
@@ -86,17 +94,17 @@ export default class MigrationSet {
         return executing;
     }
 
-    downTo(version, connection) {
+    downTo(version, connection, state) {
         let alreadyRun = this.hasBeenMigrated().map(v => v).reverse();
         let targetIndex = alreadyRun.findIndex(migration => migration.name === version);
 
-        return this.down(targetIndex + 1, connection);
+        return this.down(targetIndex + 1, connection, state);
 
     }
 
-    reset(connection) {
+    reset(connection, state) {
         let alreadyRun = this.hasBeenMigrated().map(v => v).reverse();
-        return this.down(alreadyRun.length, connection)
+        return this.down(alreadyRun.length, connection, state)
     }
 
     notMigrated() {

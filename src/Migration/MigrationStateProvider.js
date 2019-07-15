@@ -25,14 +25,14 @@ export default class MigrationStateProvider {
         return await this.connection.from(this.table);
     }
 
-    async sync(deltaState) {
-        return await this.connection.from(this.table).insert(deltaState);
+    sync(migration) {
+        return this.connection.from(this.table).insert(migration);
     }
 
-    purge(deltaState) {
+    purge(migration) {
         return this.connection
             .from(this.table)
-            .whereIn('id', deltaState.map(migration => migration.id)).del()
+            .whereIn('id', migration.id).del()
         ;
     }
 };

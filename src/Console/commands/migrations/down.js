@@ -56,19 +56,13 @@ export const handler  = async ({container, connection, rc, number, to, reset}) =
         process.exit(0);
     }
 
-    let provisioned = [];
-
-    // Start the database transaction
-
     if (reset) {
-        provisioned = await set.reset(dbc);
+        await set.reset(dbc, stateProvider);
     } else if (to) {
-        provisioned = await set.downTo(to, dbc);
+        await set.downTo(to, dbc, stateProvider);
     } else {
-        provisioned = await set.down(number, dbc);
+        await set.down(number, dbc, stateProvider);
     }
-
-    await stateProvider.purge(provisioned);
 
     process.exit(0);
 };
